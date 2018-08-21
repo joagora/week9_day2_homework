@@ -1,0 +1,19 @@
+<table>
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Salary</th>
+        <th>Department</th>
+
+    #foreach($manager in $managers)
+    <tr>
+        <td>$manager.getFirstName()</td>
+        <td>$manager.getLastName()</td>
+        <td>$manager.getSalary()</td>
+        <td>$manager.getDepartment().getTitle()</td>
+    </tr>
+
+    #end
+
+</table>
+<a href="/managers/new">Create new manager</a>

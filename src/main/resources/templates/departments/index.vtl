@@ -1,0 +1,10 @@
+<table>
+
+    <th>Title</th>
+    #foreach($department in $departments)
+    <tr>
+        <td>$department.getTitle()</td>
+        <td><a href="/departments/$department.getId()">Show details</a></td>
+    </tr>
+    #end
+</table>
