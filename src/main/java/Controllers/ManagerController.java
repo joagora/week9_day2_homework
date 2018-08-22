@@ -72,7 +72,13 @@ public class ManagerController {
             int departmentId = Integer.parseInt(req.queryParams("departmentId"));
             double budget = Double.parseDouble(req.queryParams("budget"));
             Department department = DBHelper.find(departmentId, Department.class);
-            Manager manager = new Manager(firstName, lastName, salary, department, budget);
+            int managerId = Integer.parseInt(req.params("id"));
+            Manager manager = DBHelper.find(managerId, Manager.class);
+            manager.setBudget(budget);
+            manager.setDepartment(department);
+            manager.setFirstName(firstName);
+            manager.setLastName(lastName);
+            manager.setSalary(salary);
             DBHelper.update(manager);
             res.redirect("/managers");
             return null;
