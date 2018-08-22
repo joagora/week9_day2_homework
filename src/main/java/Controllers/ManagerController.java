@@ -12,6 +12,7 @@ import java.util.Map;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
+import static spark.Spark.redirect;
 
 public class ManagerController {
 
@@ -49,6 +50,30 @@ public class ManagerController {
             DBHelper.save(manager);
 
             HashMap<String, Object> model = new HashMap<>();
+            res.redirect("/managers");
+            return null;
+        });
+
+        get("/managers/:id/edit", (req, res) -> {
+            int id = Integer.parseInt(req.params("id"));
+            Manager manager = DBHelper.find(id, Manager.class);
+            List<Department> departments = DBHelper.getAll(Department.class);
+            Map<String, Object> model = new HashMap<>();
+            model.put("departments", departments);
+            model.put("template", "templates/managers/edit.vtl");
+            model.put("manager", manager);
+            return new ModelAndView(model, "templates/layout.vtl");
+        }, new VelocityTemplateEngine());
+
+        post("/managers/:id", (req, res) -> {
+            String firstName = req.queryParams("firstName");
+            String lastName = req.queryParams("lastName");
+            int salary = Integer.parseInt(req.queryParams("salary"));
+            int departmentId = Integer.parseInt(req.queryParams("departmentId"));
+            double budget = Double.parseDouble(req.queryParams("budget"));
+            Department department = DBHelper.find(departmentId, Department.class);
+            Manager manager = new Manager(firstName, lastName, salary, department, budget);
+            DBHelper.update(manager);
             res.redirect("/managers");
             return null;
         });
